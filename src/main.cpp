@@ -1,8 +1,12 @@
+// Blood Bank Management System
+// Academic project demonstrating OOP, file handling, and basic user interaction
+
 #include<iostream>
 #include<fstream>
 #include <string>
 using namespace std;
 
+// Base class representing a blood donor
 class Blood
 {
 	public:
@@ -11,8 +15,10 @@ class Blood
 		int age,age2,bp;
 		float weight,height;
     	
+    	// Function to check donor eligibility and register donor details
     	void donate();
-        
+        	
+        	// Function to collect donor details from user input
 	        virtual void gd()
 	        {
 	        	system("cls");
@@ -56,11 +62,13 @@ class Blood
 	    	}
 };
 
+// Derived class representing a blood recipient
 class Tblood : public Blood
 {
 	public:
-
+		
 		friend void recipient();
+		// Function to collect recipient details from user input
 		void gd()
 	    {
 		    system("cls");
@@ -87,14 +95,17 @@ class Tblood : public Blood
 		}		   
 };
 
-Blood b ;	//  Base Class object
-Blood *bptr=&b;	// Pointer object	
+// Global donor object and pointer for shared access
+Blood b ;	
+Blood *bptr=&b;	
 
-fstream fout;	// File object 
+// File stream for donor records
+fstream fout;	
 
-void donordata()	// Function For writing donor data in File
+// Stores donor details into a file
+void donordata()	
 {
-	fout.open("dektop.txt",ios::out|ios::app);   // Open Function for opening file 
+	fout.open("dektop.txt",ios::out|ios::app);  
 	bptr->gd();
 	fout<<"First Name :"<<b.firstname<<endl;
 	fout<<"Last Name :"<<b.lastname<<endl;
@@ -109,7 +120,8 @@ void donordata()	// Function For writing donor data in File
 	fout.close();
 }
 
-void display_ddata()	// Functiom For reading donor data from File
+// Displays all stored donor records from file
+void display_ddata()	
 {
 	system("cls");
 	int n=100000;
@@ -135,7 +147,8 @@ void display_ddata()	// Functiom For reading donor data from File
 	system("pause");	
 }
 
-void Blood::donate()	// Base Class Function for Donor  data
+// Handles donor eligibility check and registration process
+void Blood::donate()
 {
 	system("cls");
 	cout<<endl<<endl;
@@ -181,13 +194,16 @@ void Blood::donate()	// Base Class Function for Donor  data
     }   
 }
 
-Tblood b1;	// Derived Class object
+// Global recipient object
+Tblood b1;	
 
-fstream file;	// file object
+// File stream for recipient records
+fstream file;
 
-void recipient_data()	// Function for writing recipient data in file
+// Stores recipient details into a file
+void recipient_data()	
 {
-	file.open("dektop2.txt",ios::out|ios::app);	// Open Function for opening file
+	file.open("dektop2.txt",ios::out|ios::app);	
 	b1.gd();
 	file<<"First Name :"<<b1.firstname<<endl;
 	file<<"Last Name :"<<b1.lastname<<endl;
@@ -200,7 +216,8 @@ void recipient_data()	// Function for writing recipient data in file
 	file.close();
 }
 
-void display_rdata()	// Function for reading recipient data from file
+// Displays all stored recipient records from file
+void display_rdata()	
 {
 	system("cls");
 	int m=100000;
@@ -226,7 +243,8 @@ void display_rdata()	// Function for reading recipient data from file
 	system("pause");
 }
 
-void recipient()	// Base Class Function 
+// Handles recipient registration process
+void recipient()
 {
 	recipient_data();
 	cout<<endl<<endl;
@@ -243,6 +261,7 @@ void recipient()	// Base Class Function
 	system("pause");
 }
 
+// Admin panel to view donor and recipient data
 void admin()
 {
 	system("cls");
@@ -280,6 +299,7 @@ void admin()
 	}
 }
 
+// Main menu for navigating the system
 int Main_menu()
 {
     int ch=0;
@@ -315,6 +335,7 @@ int Main_menu()
     }
 }
 
+// Program entry point
 int main()
 {
 	Main_menu();
