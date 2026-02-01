@@ -105,7 +105,7 @@ fstream fout;
 // Stores donor details into a file
 void donordata()	
 {
-	fout.open("dektop.txt",ios::out|ios::app);  
+	fout.open("donor_records.txt",ios::out|ios::app);  
 	bptr->gd();
 	fout<<"First Name :"<<b.firstname<<endl;
 	fout<<"Last Name :"<<b.lastname<<endl;
@@ -128,7 +128,7 @@ void display_ddata()
 	char str[n];
 	cout<<"\n\t\t\t\t\t\t\t\t                       Displaying Donor Information                     "<<endl<<endl;
 	cout<<"\t\t\t\t\t\t\t\t========================================================================"<<endl<<endl;
-	fout.open("dektop.txt",ios::in|ios::app);
+	fout.open("donor_records.txt",ios::in|ios::app);
 	if (!fout)
     {
 
@@ -203,7 +203,7 @@ fstream file;
 // Stores recipient details into a file
 void recipient_data()	
 {
-	file.open("dektop2.txt",ios::out|ios::app);	
+	file.open("recipient_records.txt",ios::out|ios::app);	
 	b1.gd();
 	file<<"First Name :"<<b1.firstname<<endl;
 	file<<"Last Name :"<<b1.lastname<<endl;
@@ -224,7 +224,7 @@ void display_rdata()
 	char str[m];
 	cout<<"\n\t\t\t\t\t\t\t\t                    Displaying Recipient Information                    "<<endl<<endl;
 	cout<<"\t\t\t\t\t\t\t\t========================================================================"<<endl<<endl;
-	file.open("dektop2.txt",ios::in|ios::app);
+	file.open("recipient_records.txt",ios::in|ios::app);
 	if (!file)
     {
 
