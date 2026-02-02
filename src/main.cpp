@@ -3,339 +3,250 @@
 
 #include<iostream>
 #include<fstream>
-#include <string>
+#include<string>
 using namespace std;
 
 // Base class representing a blood donor
 class Blood
 {
-	public:
-		
-		string firstname,lastname,gender,address,contact,bloodgroup,disease;
-		int age,age2,bp;
-		float weight,height;
-    	
-    	// Function to check donor eligibility and register donor details
-    	void donate();
-        	
-        	// Function to collect donor details from user input
-	        virtual void gd()
-	        {
-	        	system("cls");
-				cout<<endl<<endl;
-				cout<<"\t\t\t\t\t\t\t\t                      Enter Donor Information                           "<<endl;
-				cout<<"\t\t\t\t\t\t\t\t========================================================================"<<endl;
-	        	cout<<"\t\t\t\t\t\t\t\tEnter you Details"<<endl<<endl;
-	            cout<<"\t\t\t\t\t\t\t\tFirst Name :";
-	            cin>>firstname;
-	            cout<<"\n\t\t\t\t\t\t\t\tLast Name :";
-	            cin>>lastname;
-	            Age:
-	            cout<<"\n\t\t\t\t\t\t\t\tAge :";
-    			cin>>age;
-    			try
-			    {
-			    	if(age==age2)
-			    	{
-						cout<<".";	
-					}
-					else
-						throw age;
-				}
-				catch(int i)
-				{
-					cout<<"\t\t\t\t\t\t\t\tError! at Age :"<<i<<endl;
-					goto Age;	
-				}
-	            cout<<"\n\t\t\t\t\t\t\t\tGender :";
-	            cin>>gender;
-	            cout<<"\n\t\t\t\t\t\t\t\tWeight :";
-	            cin>>weight;
-	            cout<<"\n\t\t\t\t\t\t\t\tHeight :";
-	            cin>>height;
-	            cout<<"\n\t\t\t\t\t\t\t\tBlood Group :";
-	            cin>>bloodgroup;
-	            cout<<"\n\t\t\t\t\t\t\t\tContact :";
-	            cin>>contact;
-	            cout<<"\n\t\t\t\t\t\t\t\tAddress :";
-			    cin>>address;
-	    	}
+public:
+    string firstname, lastname, gender, address, contact, bloodgroup, disease;
+    int age, ageCheck, bp;
+    float weight, height;
+
+    void donate();
+
+    // Function to collect donor details
+    virtual void getDetails()
+    {
+        system("cls");
+        cout << "\n\n\t\t----- Enter Donor Information -----\n\n";
+
+        cout << "First Name: ";
+        cin >> firstname;
+
+        cout << "Last Name: ";
+        cin >> lastname;
+
+        cout << "Age: ";
+        cin >> age;
+        while(age < 18 || age > 60)
+        {
+            cout << "Invalid age! Enter age between 18 and 60: ";
+            cin >> age;
+        }
+
+        cout << "Gender: ";
+        cin >> gender;
+
+        cout << "Weight (kg): ";
+        cin >> weight;
+
+        cout << "Height (cm): ";
+        cin >> height;
+
+        cout << "Blood Group: ";
+        cin >> bloodgroup;
+
+        cout << "Contact: ";
+        cin >> contact;
+
+        cout << "Address: ";
+        cin >> address;
+    }
 };
 
-// Derived class representing a blood recipient
-class Tblood : public Blood
+// Derived class for recipient
+class Recipient : public Blood
 {
-	public:
-		
-		friend void recipient();
-		// Function to collect recipient details from user input
-		void gd()
-	    {
-		    system("cls");
-		    cout<<endl<<endl;
-		    cout << "\n\n\t\t------------------ Recipient Registration ------------------\n";
-			cout << "\t\t-------------------------------------------------------------\n\n";
-		    cout<<"\n\t\tFirst Name :";
-            cin>>firstname;
-            cout<<"\n\t\tLast Name :";
-            cin>>lastname;
-            cout<<"\n\t\tAge :";
-   			cin>>age;
-	        cout<<"\n\t\tGender :";
-	        cin>>gender;
-            cout<<"\n\t\tAddress :";
-			cin>>address;
-		    cout<<"\n\t\tContact No :";
-		    cin>>contact;
-			cout<<"\n\t\tEnter Blood Group you want :";
-		    cin>>bloodgroup;
-		    cout<<"\n\t\tHow Many Blood Packets Do you want (1 Packet contains 500ml ) :";
-		    cin>>bp;
-			cout<<endl;
-		}		   
+public:
+    void getDetails() override
+    {
+        system("cls");
+        cout << "\n\n\t\t----- Recipient Registration -----\n\n";
+
+        cout << "First Name: ";
+        cin >> firstname;
+
+        cout << "Last Name: ";
+        cin >> lastname;
+
+        cout << "Age: ";
+        cin >> age;
+
+        cout << "Gender: ";
+        cin >> gender;
+
+        cout << "Address: ";
+        cin >> address;
+
+        cout << "Contact: ";
+        cin >> contact;
+
+        cout << "Required Blood Group: ";
+        cin >> bloodgroup;
+
+        cout << "Number of Blood Packets Needed: ";
+        cin >> bp;
+    }
 };
 
-// Global donor object and pointer for shared access
-Blood b ;	
-Blood *bptr=&b;	
+Blood donor;
+Blood* donorPtr = &donor;
+Recipient recipientObj;
 
-// File stream for donor records
-fstream fout;	
+fstream donorFile;
+fstream recipientFile;
 
-// Stores donor details into a file
-void donordata()	
+// Save donor data
+void saveDonorData()
 {
-	fout.open("donor_records.txt",ios::out|ios::app);  
-	bptr->gd();
-	fout<<"First Name :"<<b.firstname<<endl;
-	fout<<"Last Name :"<<b.lastname<<endl;
-	fout<<"Age :"<<b.age<<endl;
-	fout<<"Gender :"<<b.gender<<endl;
-    fout<<"Weight :"<<b.weight<<endl;
-	fout<<"Height :"<<b.height<<endl;
-	fout<<"Blood Group :"<<b.bloodgroup<<endl;
-    fout<<"Any Disease :"<<b.disease<<endl;
-    fout<<"Contact :"<<b.contact<<endl;
-    fout<<"Address :"<<b.address<<endl<<endl;
-	fout.close();
+    donorFile.open("donor_records.txt", ios::out | ios::app);
+    donorPtr->getDetails();
+
+    donorFile << "Name: " << donor.firstname << " " << donor.lastname << endl;
+    donorFile << "Age: " << donor.age << endl;
+    donorFile << "Gender: " << donor.gender << endl;
+    donorFile << "Blood Group: " << donor.bloodgroup << endl;
+    donorFile << "Contact: " << donor.contact << endl;
+    donorFile << "Address: " << donor.address << endl << endl;
+
+    donorFile.close();
 }
 
-// Displays all stored donor records from file
-void display_ddata()	
+// Show donor data
+void displayDonorData()
 {
-	system("cls");
-	int n=100000;
-	char str[n];
-	cout<<"\n\t\t\t\t\t\t\t\t                       Displaying Donor Information                     "<<endl<<endl;
-	cout<<"\t\t\t\t\t\t\t\t========================================================================"<<endl<<endl;
-	fout.open("donor_records.txt",ios::in|ios::app);
-	if (!fout)
-    {
+    system("cls");
+    donorFile.open("donor_records.txt", ios::in);
 
-        cout<<"\t\t\t\t\t\t\t\tNo Data Is Present...";
-        fout.close();
+    if(!donorFile)
+    {
+        cout << "No donor data available.\n";
     }
     else
     {
-		while(fout)
-		{
-			fout.getline(str,n);
-			cout<<"\t\t\t\t\t\t\t\t"<<str<<endl;
-		}
-	}
-	fout.close();
-	system("pause");	
+        string line;
+        while(getline(donorFile, line))
+            cout << line << endl;
+    }
+
+    donorFile.close();
+    system("pause");
 }
 
-// Handles donor eligibility check and registration process
+// Eligibility check
 void Blood::donate()
 {
-	system("cls");
-	cout<<endl<<endl;
-	cout << "\n\n\t\t------------------ Donor Registration ------------------\n";
-	cout << "\t\t---------------------------------------------------------\n\n";
-	cout<<"\t\tEnter Details For Checking That You Are Eligible For Donation Or Not"<<endl;
-	cout<<endl;
-	cout<<"\t\tAge :";
-	cin>>bptr->age2;
-	cout<<endl;
-    cout<<"\t\tYou Can't Donate Blood if you have one of this :"<<endl<<endl;
-    cout<<"\t\t1: You have a Recent Piercing or Tattoo "<<endl<<endl;
-	cout<<"\t\t2: You have a Bad Cold or the Flu "<<endl<<endl;
-    cout<<"\t\t3: You Were Recently Treated With Antibiotics "<<endl<<endl;
-    cout<<"\t\t4: You Don't Weigh Enough "<<endl<<endl;
-    cout<<"\t\t5: You Have a New Sexual Partner "<<endl<<endl;
-    cout<<"\t\tYes Or No :";
-    cin>>bptr->disease;
-    if(bptr->age2<=16 || bptr->age2>=55 )
+    system("cls");
+    cout << "\n\n\t\t----- Donor Eligibility Check -----\n\n";
+
+    cout << "Enter your age: ";
+    cin >> ageCheck;
+
+    cout << "Do you have any major disease? (yes/no): ";
+    cin >> disease;
+
+    if(ageCheck < 18 || ageCheck > 60 || disease == "yes")
     {
-    	cout<<"\n\t\tYou are not Eligible"<<endl;
-		system("pause"); 
-	}
-	if(bptr->disease=="yes")
-	{
-        cout<<"\n\t\tYou are not Eligible"<<endl;
-		system("pause");
-	}
-    else	system("pause");
-    {
-        donordata();
-        cout<<endl<<endl;
-        cout<<"\t\tPerfect Your registration is done successfully"<<endl<<endl;
-        cout<<"\t\t====================================="<<endl<<endl;
-        cout<<"\t\tDonor Inforamation"<<endl;
-    	cout<<"\t\tName :"<<bptr->firstname<<" "<<bptr->lastname<<endl;
-    	cout<<"\t\tAge :"<<bptr->age2<<endl;
-    	cout<<"\t\tGender :"<<bptr->gender<<endl;
-    	cout<<"\t\tBlood Group :"<<bptr->bloodgroup<<endl;
-    	cout<<"\t\tDate of donation :12.12.2022 "<<endl<<endl;
-    	cout<<"\t\t====================================="<<endl;
-    	system("pause");
-    }   
-}
-
-// Global recipient object
-Tblood b1;	
-
-// File stream for recipient records
-fstream file;
-
-// Stores recipient details into a file
-void recipient_data()	
-{
-	file.open("recipient_records.txt",ios::out|ios::app);	
-	b1.gd();
-	file<<"First Name :"<<b1.firstname<<endl;
-	file<<"Last Name :"<<b1.lastname<<endl;
-	file<<"Age :"<<b1.age<<endl;
-	file<<"Gender :"<<b1.gender<<endl;
-	file<<"Address :"<<b1.address<<endl;
-	file<<"Contact No :"<<b1.contact<<endl;
-	file<<"Blood recipient want :"<<b1.bloodgroup<<endl;
-	file<<"Quantity :"<<b1.bp<<endl<<endl;
-	file.close();
-}
-
-// Displays all stored recipient records from file
-void display_rdata()	
-{
-	system("cls");
-	int m=100000;
-	char str[m];
-	cout<<"\n\t\t\t\t\t\t\t\t                    Displaying Recipient Information                    "<<endl<<endl;
-	cout<<"\t\t\t\t\t\t\t\t========================================================================"<<endl<<endl;
-	file.open("recipient_records.txt",ios::in|ios::app);
-	if (!file)
-    {
-
-        cout<<"\t\t\t\t\t\t\t\tNo Data Is Present...";
-        file.close();
+        cout << "\nYou are NOT eligible to donate blood.\n";
+        system("pause");
     }
     else
     {
-		while(file)
-		{
-			file.getline(str,m);
-			cout<<"\t\t\t\t\t\t\t\t"<<str<<endl;
-		}
-	}
-	file.close();	
-	system("pause");
-}
-
-// Handles recipient registration process
-void recipient()
-{
-	recipient_data();
-	cout<<endl<<endl;
-        cout<<"\t\t\t\t\t\t\t\tPerfect Your registration is done successfully"<<endl<<endl;
-        cout<<"\t\t\t\t\t\t\t\t====================================="<<endl<<endl;
-        cout<<"\t\t\t\t\t\t\t\tRecipient Information"<<endl;
-    	cout<<"\t\t\t\t\t\t\t\tName :"<<b1.firstname<<" "<<b1.lastname<<endl;
-    	cout<<"\t\t\t\t\t\t\t\tAge :"<<b1.age<<endl;
-    	cout<<"\t\t\t\t\t\t\t\tGender :"<<b1.gender<<endl;
-    	cout<<"\t\t\t\t\t\t\t\tBlood Group Want :"<<b1.bloodgroup<<endl;
-    	cout<<"\t\t\t\t\t\t\t\tBlood Quantity :"<<b1.bp<<endl;
-    	cout<<"\t\t\t\t\t\t\t\tDate Of Taking Blood :12.12.2022 "<<endl<<endl;
-    	cout<<"\t\t\t\t\t\t\t\t====================================="<<endl;
-	system("pause");
-}
-
-// Admin panel to view donor and recipient data
-void admin()
-{
-	system("cls");
-	int password,ch1;
-	cout<<endl<<endl;
-	cout<<"\t\t\t\t\t\t\t\t========================================================================"<<endl<<endl;
-	password:
-	cout<<"\t\t\t\t\t\t\t\tPassword :";
-	cin>>password;
-	if(password==2107053)
-	{
-		system("cls");
-		cout << "\n\n\t\t==================== ADMIN PANEL ====================\n";
-		cout << "\t\t=====================================================\n\n";
-	    cout<<"\t\t\t\t\t\t\t\t1: Donor Data \n\n\t\t\t\t\t\t\t\t2: Recipient Data"<<endl;
-	    cin>>ch1;
-		switch(ch1)
-		{
-		    case 1:
-		    	display_ddata();
-		    	break;
-			case 2:
-			    display_rdata();
-			    break;
-		   	default:
-		   		cout<<"\t\t\t\t\t\t\t\tOOPS! you pressed wrong button"<<endl;
-	            break;
-		}
-	}
-	else
-	{
-		cout<<"\t\t\t\t\t\t\t\tOOPS! Wrong Password"<<endl;
-		goto password;
-	}
-}
-
-// Main menu for navigating the system
-int Main_menu()
-{
-    int ch=0;
-    while(ch != 4)
-    {
-    	system("cls");
-    	cout<<endl<<endl<<endl;
-	    cout << "\n\n\t\t================ Blood Bank Management System ================\n";
-		cout << "\t\t==============================================================\n\n";
-	    cout << "\n\t\t1. Donor\n";
-		cout << "\t\t2. Recipient\n";
-		cout << "\t\t3. Admin\n";
-		cout << "\t\t4. Exit\n\n";
-        cin>>ch;
-        switch(ch)
-        {
-            case 1:
-                bptr->donate();
-                break;
-            case 2:
-                recipient();
-                break;
-            case 3:
-        		admin();
-        		break;
-        	case 4:
-        		return 0;
-            default:
-                cout<<"\t\t\t\t\t\t\t\tOOPS! you pressed wrong button"<<endl;
-                break;
-        }
+        cout << "\nYou are eligible! Proceeding with registration...\n";
+        system("pause");
+        saveDonorData();
     }
 }
 
-// Program entry point
+// Save recipient data
+void saveRecipientData()
+{
+    recipientFile.open("recipient_records.txt", ios::out | ios::app);
+    recipientObj.getDetails();
+
+    recipientFile << "Name: " << recipientObj.firstname << " " << recipientObj.lastname << endl;
+    recipientFile << "Age: " << recipientObj.age << endl;
+    recipientFile << "Gender: " << recipientObj.gender << endl;
+    recipientFile << "Blood Group Needed: " << recipientObj.bloodgroup << endl;
+    recipientFile << "Packets Required: " << recipientObj.bp << endl << endl;
+
+    recipientFile.close();
+
+    cout << "\nRegistration successful!\n";
+    system("pause");
+}
+
+// Show recipient data
+void displayRecipientData()
+{
+    system("cls");
+    recipientFile.open("recipient_records.txt", ios::in);
+
+    if(!recipientFile)
+    {
+        cout << "No recipient data available.\n";
+    }
+    else
+    {
+        string line;
+        while(getline(recipientFile, line))
+            cout << line << endl;
+    }
+
+    recipientFile.close();
+    system("pause");
+}
+
+// Admin panel
+void adminPanel()
+{
+    int password;
+    cout << "\nEnter Admin Password: ";
+    cin >> password;
+
+    if(password == 2107053)
+    {
+        int choice;
+        cout << "\n1. View Donor Records\n2. View Recipient Records\nChoice: ";
+        cin >> choice;
+
+        if(choice == 1) displayDonorData();
+        else if(choice == 2) displayRecipientData();
+        else cout << "Invalid option.\n";
+    }
+    else
+    {
+        cout << "Wrong password!\n";
+        system("pause");
+    }
+}
+
+// Main menu
 int main()
 {
-	Main_menu();
-	return 0;
+    int choice = 0;
+
+    while(choice != 4)
+    {
+        system("cls");
+        cout << "\n==== Blood Bank Management System ====\n";
+        cout << "1. Donor\n";
+        cout << "2. Recipient\n";
+        cout << "3. Admin\n";
+        cout << "4. Exit\n";
+        cout << "Choice: ";
+        cin >> choice;
+
+        switch(choice)
+        {
+            case 1: donorPtr->donate(); break;
+            case 2: saveRecipientData(); break;
+            case 3: adminPanel(); break;
+            case 4: cout << "Exiting...\n"; break;
+            default: cout << "Invalid choice!\n"; system("pause");
+        }
+    }
+    return 0;
 }
