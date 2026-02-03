@@ -6,6 +6,10 @@
 #include<string>
 using namespace std;
 
+// Function Prototypes 
+int countDonorRecords();
+int countRecipientRecords();
+
 // Base class representing a blood donor
 class Blood
 {
@@ -199,6 +203,35 @@ void displayRecipientData()
     system("pause");
 }
 
+//  RECORD COUNT FUNCTIONS 
+int countDonorRecords()
+{
+    ifstream file("donor_records.txt");
+    string line;
+    int count = 0;
+
+    while(getline(file, line))
+        if(line.rfind("Name:", 0) == 0)  // line starts with "Name:"
+            count++;
+
+    file.close();
+    return count;
+}
+
+int countRecipientRecords()
+{
+    ifstream file("recipient_records.txt");
+    string line;
+    int count = 0;
+
+    while(getline(file, line))
+        if(line.rfind("Name:", 0) == 0)
+            count++;
+
+    file.close();
+    return count;
+}
+
 // Admin panel
 void adminPanel()
 {
@@ -212,9 +245,23 @@ void adminPanel()
         cout << "\n1. View Donor Records\n2. View Recipient Records\nChoice: ";
         cin >> choice;
 
-        if(choice == 1) displayDonorData();
-        else if(choice == 2) displayRecipientData();
-        else cout << "Invalid option.\n";
+        if(choice == 1) 
+        {
+            displayDonorData();
+            cout << "\nTotal Donors Registered: " << countDonorRecords() << endl;
+            system("pause");
+        }
+        else if(choice == 2) 
+        {
+            displayRecipientData();
+            cout << "\nTotal Recipients Registered: " << countRecipientRecords() << endl;
+            system("pause");
+        }
+        else 
+        {
+            cout << "Invalid option.\n";
+            system("pause");
+        }
     }
     else
     {
